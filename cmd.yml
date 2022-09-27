@@ -1,0 +1,32 @@
+---
+  - name: Stop/start /etc/init.d/besclient process
+    hosts: centos7
+    tasks:
+      - name: Stop the client
+        become: yes
+        become_user: root
+        tags: cmd
+        shell: "/etc/init.d/besclient stop"
+        register: stopresult
+
+      - name: Debug message
+        debug: 
+          var: stopresult
+
+      - name: Sleep 10
+        tags: cmd
+        become: yes
+        become_user: root
+        shell: "sleep 10"
+
+      - name: Start the client
+        tags: cmd
+        become: yes
+        become_user: root
+        command: /etc/init.d/besclient start
+        register: startresult
+
+      - name: Debug message
+        debug: 
+          var: startresult
+

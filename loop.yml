@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: clear log
+      file:
+        path: async.log
+        state: absent
+
+    - name: loop sample
+      shell: echo "$(date +%Y.%m.%d_%H.%M.%S); {{ item }} begin" >> async.log; sleep "{{ item }}"; echo "$(date +%Y.%m.%d_%H.%M.%S); {{ item }} end" >> async.log
+      loop:
+        - 2
+        - 3
+        - 4

@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: clear log
+      file:
+        path: async.log
+        state: absent
+
+    - name: async sample
+      shell: echo "start" >> async-poll.log; sleep 10; echo "end" >> async-poll.log 
+      async: 11
+      poll: 0

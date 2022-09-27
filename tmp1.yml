@@ -1,0 +1,35 @@
+- hosts: 
+    centos7
+  gather_facts: false
+
+  vars:
+    first_login_password: "kwsnty01"
+    login_user: "x261243"
+    login_host:
+    new_password: "Kauxopt18"
+    ssh_common_args: "" 
+
+  tasks:
+    - name: "Check if host is reachable"
+      wait_for:
+        timeout: 0
+      register: connect_rs
+      ignore_unreachable: yes
+
+    - when: connect_rs is unreachable
+      name: "Try first login and change the password"
+      delegate_to: localhost
+      become: no
+      expect:
+        command: ssh {{ ssh_common_args }} {{ login_user }}@{{ inventory_hostname }}
+        #command: sshpass -p {{ first_login_password }} ssh {{ ssh_common_args }} {{ login_user }}@{{ ansible_ssh_host }}
+        timeout: 20
+        responses:
+          "x261243's Old password:": "{{ first_login_password }}"
+          "x261243's New password:": "{{ new_password }}"
+          "Re-enter x261243's new password:": "{{ new_password }}"
+      register: passwd_result
+     
+    - name: "Modify x261243 ini login password result"
+      debug:
+        msg: "{{ inventory_hostname }} x261243 initial password change status: passwd_result"

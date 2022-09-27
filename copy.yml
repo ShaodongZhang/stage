@@ -1,0 +1,25 @@
+---
+  - name: Test copy files
+    hosts: centos7  
+    tasks:
+      - name: create target directory
+        file: path=/opt/ansible state=directory mode=0755
+
+      - name: copy file
+        copy: 
+          src: ./play.txt
+          dest: /opt/ansible/play.txt 
+          owner: root
+          group: root
+          mode: '0755'
+
+      - name: copy template files
+        template: src=./templates/fuga.j2 dest=/opt/ansible/fuga owner=root group=root mode=0755
+
+      - name: output message
+        debug: msg="{{ message }}"
+
+      - name: output fruits
+        debug: msg="We want {{ item.value.amount }} {{ item.key }} !"
+        with_dict: "{{ fruits }}"
+

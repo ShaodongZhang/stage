@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: false
+  become: true
+
+  vars:
+    myuser: "x261243"
+    mypasswd: "netscout1"
+
+  tasks:
+    - name: change password
+      ansible.builtin.user:
+        name: "{{ myuser }}"
+        state: present
+        password: "{{ mypasswd | password_hash('sha512') }}"

@@ -1,0 +1,6 @@
+---
+- hosts: wingrp01
+  tasks:
+    - name: Echo message
+      debug:
+        msg: "Output message from cmd repo: echo.yml"
